@@ -3,7 +3,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 const adminAxios = axios.create({
     baseURL: process.env.NODE_ENV != 'development' ?
-        'https://restaurant-rose-five.vercel.app/admin' :
+        'https://car-rent-api.vercel.app/admin' :
         "http://192.168.1.8:3000/admin",
     withCredentials: true,
     headers: {
