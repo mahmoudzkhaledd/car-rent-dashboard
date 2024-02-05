@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { adminAxios } from "@/Utils/AdminAxios";
 import { useNavigate, useParams } from "react-router-dom";
 import { useQuery } from "react-query";
@@ -28,8 +28,10 @@ export default function AddNewPackage({ editMode }) {
         }
         setLoading('add');
         try {
-            const res = await adminAxios.post('/packages/add', packagee);
-            nav(`/packages/${res.data.package._id}`)
+
+            const res = editMode ? await adminAxios.put(`/packages/${packagee._id}`, packagee) 
+            : await adminAxios.post('/packages/add', packagee);
+            nav(`/packages/${params.id}`);
         } catch (ex) {
 
 
@@ -55,8 +57,13 @@ export default function AddNewPackage({ editMode }) {
 
 
     const { isLoading, error, data, refetch, } = useQuery(
-        `get-admin-edit-${params.id}`,
-        () => adminAxios.get(`admins/${params.id || ""}`),
+        `get-package-edit-${params.id}`,
+        () => adminAxios.get(`packages/${params.id || ""}`).then(p => {
+            if (p?.data?.package != null) {
+                setPackage(p?.data?.package)
+            }
+            return p;
+        }),
         {
             retry: 0,
             enabled: params.id != null && editMode == true,
@@ -67,10 +74,10 @@ export default function AddNewPackage({ editMode }) {
     if (isLoading) {
         return <Spinner />;
     }
-    const admin = !editMode ? null : data?.data.admin;
-    if (error || (admin == null && params.id != null && editMode == true)) {
+    if (error || (data?.data?.package == null && params.id != null && editMode == true)) {
         return <SorryDiv message="هذه الباقة غير موجودة" />
     }
+
     return (
         <div className="flex flex-col gap-5 md:flex-row">
             <div id="add-package-form" className=" flex-[2] h-fit mb-8 w-full bg-[color:var(--secondary)] rounded-lg shadow  md:mt-0 xl:p-0  ">
@@ -101,8 +108,8 @@ export default function AddNewPackage({ editMode }) {
                                 setPackage({ ...packagee });
                             }}
                             name="description"
-                            placeholder="الوصف الباقة"
-                            label="اسم الباقة" />
+                            placeholder="وصف الباقة"
+                            label="وصف الباقة" />
                         <TextBox
                             disabled={loading}
                             value={packagee.price || 0}

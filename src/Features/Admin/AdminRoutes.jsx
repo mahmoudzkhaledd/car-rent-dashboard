@@ -96,7 +96,7 @@ function AdminLayout() {
             <Sidebar selected={path.pathname == '/' ? "" : path.pathname.split('/')[1].split('/')[0]} className="layout__sidebar lg" />
             <div className="w-100 h-100 flex flex-col gap-5">
                 <AdminNavbar />
-                <div className='p-2 md:p-6 h-screen'>
+                <div className='p-2 mb-6 md:p-6 h-screen'>
 
                     <Outlet />
                 </div>

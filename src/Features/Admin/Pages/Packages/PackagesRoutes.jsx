@@ -8,6 +8,7 @@ export default function PackagesRouter() {
         <Routes>
             <Route path="/" element={<MainPage />} />
             <Route path="/:id" element={<PackagePage />} />
+            <Route path="/:id/edit" element={<AddNewPackage editMode={true}/>} />
             <Route path="/add-package" element={<AddNewPackage />} />
         </Routes>
     );

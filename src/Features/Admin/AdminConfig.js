@@ -17,11 +17,16 @@ export const adminConfig = {
             icon: "fa-solid fa-box-open",
             name: "packages",
         },
-        // rents: {
-        //     title: "الحجوزات",
-        //     icon: "fa-solid fa-retweet",
-        //     name: "rents",
-        // },
+        rents: {
+            title: "الحجوزات",
+            icon: "fa-solid fa-retweet",
+            name: "rents",
+        },
+        teams: {
+            title: "الفرق",
+            icon: "fa-solid fa-user-group",
+            name: "teams",
+        },
 
 
         admins: {

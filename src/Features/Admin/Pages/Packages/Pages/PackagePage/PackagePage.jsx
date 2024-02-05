@@ -3,7 +3,7 @@ import Spinner from "@/GeneralElements/Spinner/Spinner";
 
 import { adminAxios } from "@/Utils/AdminAxios";
 
-import { useParams, } from "react-router-dom";
+import { Link, useNavigate, useParams, } from "react-router-dom";
 import { useQuery } from 'react-query';
 import moment from 'moment';
 
@@ -11,6 +11,7 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 
 import PricingComponent from "@/GeneralComponents/PricingComponent/PricingComponent";
+import Button from "@/GeneralElements/Button/Button";
 
 
 function pad(n, width, z) {
@@ -22,7 +23,7 @@ function pad(n, width, z) {
 export default function PackagePage({ }) {
     const searchParams = useParams();
     const [loading, setLoading] = useState(null);
-
+    const nav = useNavigate();
     const { isLoading, error, data, refetch } = useQuery(
         `get-user-admin-${searchParams.id || ""}`,
         () => adminAxios.get(`packages/${searchParams.id || ""}`),
@@ -35,45 +36,29 @@ export default function PackagePage({ }) {
         return <Spinner />;
     }
     if (error || data == null || data.data.package == null) {
-        return <SorryDiv message="هذا المستخدم غير موجودة, الرجاء المحاولة مرة اخرى مع مستخدم اخر" />
+        return <SorryDiv message="هذه الباقة غير موجودة" />
     }
     const packagee = data.data.package;
-    const activeAccount = async () => {
-        if (window.confirm("هل أنت متأكد؟") && user != null) {
+    const deletePackage = async () => {
+        if (window.confirm("هل أنت متأكد من حذف الباقة؟") && packagee != null) {
 
             setLoading('active');
             try {
-                const res = await adminAxios.post(`users/${user._id}/active-account`);
-                refetch();
-                toast("تمت العميلة بنجاح");
-            } catch (ex) {
-                toast.error(ex.message);
+                const res = await adminAxios.delete(`packages/${packagee._id}`);
+                nav('/packages')
 
-            }
+            } catch (ex) { }
             setLoading(null);
         }
     }
-    const banUser = async () => {
-        if (window.confirm(`هل أنت متأكد من ${user.banned ? "الغاء حظر" : "حظر"} المستخدم؟`) && user != null) {
 
-            setLoading('ban');
-            try {
-                const res = await adminAxios.post(`users/${user._id}/ban`);
-                refetch();
-                toast(`تم ${user.banned ? "الغاء حظر" : "حظر"} المستخدم بنجاح`);
-            } catch (ex) {
-                toast.error(ex.message);
-
-            }
-            setLoading(null);
-        }
-    }
 
 
     return (
         <main>
             <div className="flex gap-5">
                 <h5>{packagee.name}</h5>
+
             </div>
             <div className="grid grid-cols-1 px-4 pt-6 gap-6 xl:grid-cols-3 xl:gap-6">
 
@@ -81,6 +66,11 @@ export default function PackagePage({ }) {
                     <div className="bg-[color:var(--secondary)]   rounded-2xl p-4 mb-6">
                         <div className="flex flex-row justify-between items-center">
                             <h3 className="mb-4 text-xl font-bold">بيانات الباقة</h3>
+                            <Link to={`/packages/${packagee._id}/edit`}>
+                                <Button>
+                                    تعديل
+                                </Button>
+                            </Link>
                         </div>
 
                         <dl className="grid mb-5 grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2">
@@ -127,12 +117,17 @@ export default function PackagePage({ }) {
                         </dl>
 
 
+                        <Button
+                            loading={loading}
+                            disabled={loading}
+                            className="bg-red-500 hover:bg-red-400" onClick={deletePackage}>
+                            حذف الباقة
+                        </Button>
                     </div>
-
                 </div>
                 <div className="flex flex-col gap-4">
-                    <PricingComponent 
-                    className={'w-full'}
+                    <PricingComponent
+                        className={'w-full'}
                         title={packagee.name}
                         description={packagee.description}
                         price={packagee.price}

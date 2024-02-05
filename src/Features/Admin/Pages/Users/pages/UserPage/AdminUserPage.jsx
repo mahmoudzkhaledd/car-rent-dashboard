@@ -14,12 +14,6 @@ import { toast } from "react-toastify";
 import { timeSince } from "@/Utils/Helper";
 
 
-function pad(n, width, z) {
-    z = z || '0';
-    n = n + '';
-    return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
-}
-
 export default function AdminUserPage({ }) {
     const searchParams = useParams();
     const [loading, setLoading] = useState(null);
@@ -187,7 +181,9 @@ export default function AdminUserPage({ }) {
                     </div>
 
                 </div>
-                
+                <div>
+                    
+                </div>
             </div>
         </main>
     )
