@@ -98,6 +98,12 @@ export default function PackagePage({ }) {
                                     {packagee.price}$
                                 </dd>
                             </div>
+                            <div>
+                                <dt className="text-sm font-medium text-fade mb-2">الفترة المجانية</dt>
+                                <dd className="text-sm font-semibold ">
+                                    {packagee.freePeriod} شهر
+                                </dd>
+                            </div>
 
 
 

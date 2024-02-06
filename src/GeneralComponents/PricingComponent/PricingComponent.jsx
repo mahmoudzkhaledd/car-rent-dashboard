@@ -1,10 +1,12 @@
 
-export default function PricingComponent({ title, description, price, advantages,className }) {
+export default function PricingComponent({ freePeriod, title, description, price, advantages, className }) {
 
 
     return (
-        <div className={`${className} flex flex-col p-6 mx-auto max-w-lg text-center text-gray-900 bg-[color:var(--secondary)] rounded-lg border border-gray-100 shadow `}>
+        <div className={`${className} flex flex-col p-6 mx-auto  text-center text-gray-900 bg-[color:var(--secondary)] rounded-lg border border-gray-100 shadow `}>
             <h3 className="mb-4 text-2xl font-semibold">{title || "اسم الباقة"}</h3>
+            <h4 className="mb-4 text-xl ">أحصل على {freePeriod || 0} شهر مجاني</h4>
+            
             <p className="font-light text-fade sm:text-lg ">
                 {description || "التفاصيل"}
             </p>

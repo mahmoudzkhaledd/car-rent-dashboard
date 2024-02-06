@@ -28,10 +28,13 @@ export default function AddNewPackage({ editMode }) {
         }
         setLoading('add');
         try {
-
-            const res = editMode ? await adminAxios.put(`/packages/${packagee._id}`, packagee) 
-            : await adminAxios.post('/packages/add', packagee);
-            nav(`/packages/${params.id}`);
+            const res = editMode ? await adminAxios.put(`/packages/${packagee._id}`, packagee)
+                : await adminAxios.post('/packages/add', packagee);
+            if (editMode) {
+                nav(`/packages/${params.id}`);
+            } else {
+                nav(`/packages/${res?.data?.package?._id}`);
+            }
         } catch (ex) {
 
 
@@ -121,6 +124,17 @@ export default function AddNewPackage({ editMode }) {
                             type="number"
                             placeholder="السعر "
                             label="السعر" />
+                        <TextBox
+                            disabled={loading}
+                            value={packagee.freePeriod || 0}
+                            onChanged={(e) => {
+                                packagee.freePeriod = Number(e.target?.value) || 0;
+                                setPackage({ ...packagee });
+                            }}
+                            name="freePeriod"
+                            type="number"
+                            placeholder="فترة اضافية "
+                            label="فترة اضافية " />
                         <div className="flex items-end gap-3 justify-between">
                             <TextBox
                                 id={'adv'}
@@ -159,6 +173,7 @@ export default function AddNewPackage({ editMode }) {
             </div>
             <div className="flex-[1]">
                 <PricingComponent
+                    freePeriod={packagee?.freePeriod}
                     title={packagee?.name}
                     description={packagee?.description}
                     price={packagee?.price}

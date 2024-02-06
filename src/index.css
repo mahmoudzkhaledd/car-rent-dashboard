@@ -14,7 +14,16 @@
   --secondary-select: #636363;
 }
 
-
+/* :root {
+  --text: rgb(0, 0, 0);
+  --text-fade: rgb(134, 134, 134);
+  --text-invert: rgb(255, 255, 255);
+  --background: rgb(255, 255, 255);
+  --primary: #7764a3;
+  --primary-select: #ae97e5;
+  --secondary: #ebebeb;
+  --secondary-select: #f2f2f2;
+} */
 
 
 
